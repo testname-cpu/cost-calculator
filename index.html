@@ -6,17 +6,19 @@
   <style>
     body {
       font-family: "Hiragino Kaku Gothic ProN", sans-serif;
-      background: #eef7f9;
+      background: #fff8f1;
       color: #333;
-      max-width: 900px;
+      max-width: 1000px;
       margin: 30px auto;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 30px rgba(255, 152, 0, 0.3);
+    }
+    h1, h2, h3 {
+      color: #ef6c00;
     }
     h2 {
-      color: #00796b;
-      border-left: 6px solid #00796b;
+      border-left: 6px solid #ffa726;
       padding-left: 10px;
       margin-top: 40px;
     }
@@ -24,35 +26,43 @@
       font-weight: bold;
       display: block;
       margin-top: 10px;
+      color: #bf360c;
     }
-    input {
+    input[type="number"] {
       width: 100%;
       padding: 10px;
       margin-top: 4px;
       margin-bottom: 16px;
-      border: 1px solid #ccc;
+      border: 1px solid #ffcc80;
       border-radius: 6px;
+      background-color: #fff3e0;
+    }
+    input[type="checkbox"] {
+      margin-top: 16px;
     }
     button {
-      background-color: #00796b;
+      background-color: #ef6c00;
       color: white;
-      padding: 12px 20px;
+      padding: 14px 24px;
       border: none;
       border-radius: 8px;
       font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       margin-top: 20px;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
     button:hover {
-      background-color: #004d40;
+      background-color: #e65100;
     }
     .result {
       background: #ffffff;
       margin-top: 20px;
       padding: 20px;
-      border-radius: 8px;
-      border-left: 5px solid #00796b;
+      border-radius: 12px;
+      border-left: 6px solid #ffa726;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     table {
       width: 100%;
@@ -61,17 +71,30 @@
     }
     th, td {
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #ffcc80;
       text-align: left;
     }
     th {
-      background-color: #eeeeee;
+      background-color: #ffe0b2;
+      color: #bf360c;
+    }
+    .flex-box {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .column {
+      flex: 1;
+      min-width: 300px;
+    }
+    #otherMediaSection {
+      display: none;
     }
     .bg-light-blue {
-      background-color: #e3f2fd;
+      background-color: #e1f5fe;
     }
     .bg-light-green {
-      background-color: #f1f8e9;
+      background-color: #e8f5e9;
     }
     .bg-light-yellow {
       background-color: #fffde7;
@@ -82,14 +105,35 @@
   <h1>費用対効果・月間売上計算ツール</h1>
 
   <h2>■ 媒体効果の計算</h2>
-  <label>予約専用番号通話成立数</label><input id="calls" type="number">
-  <label>来店率（%）</label><input id="visitRate" type="number">
-  <label>1組あたり人数</label><input id="groupSize" type="number">
-  <label>ネット予約来店人数</label><input id="netVisit" type="number">
-  <label>客単価</label><input id="unitPrice" type="number">
-  <label>月額固定費（税込）</label><input id="monthlyFee" type="number">
-  <label>ネット予約人数（ランチ）</label><input id="lunch" type="number">
-  <label>ネット予約人数（ディナー）</label><input id="dinner" type="number">
+  <label><input type="checkbox" id="toggleOtherMedia" onchange="document.getElementById('otherMediaSection').style.display = this.checked ? 'block' : 'none';"> 他媒体も比較する</label>
+
+  <div class="flex-box">
+    <div class="column">
+      <h3>自媒体</h3>
+      <label>予約専用番号通話成立数</label><input id="calls" type="number">
+      <label>来店率（%）</label><input id="visitRate" type="number">
+      <label>1組あたり人数</label><input id="groupSize" type="number">
+      <label>ネット予約来店人数</label><input id="netVisit" type="number">
+      <label>客単価</label><input id="unitPrice" type="number">
+      <label>月額固定費（税込）</label><input id="monthlyFee" type="number">
+      <label>ネット予約人数（ランチ）</label><input id="lunch" type="number">
+      <label>ネット予約人数（ディナー）</label><input id="dinner" type="number">
+    </div>
+
+    <div class="column" id="otherMediaSection">
+      <h3>他媒体</h3>
+      <label>予約専用番号通話成立数</label><input id="otherCalls" type="number">
+      <label>来店率（%）</label><input id="otherVisitRate" type="number">
+      <label>1組あたり人数</label><input id="otherGroupSize" type="number">
+      <label>ネット予約来店人数</label><input id="otherNetVisit" type="number">
+      <label>客単価</label><input id="otherUnitPrice" type="number">
+      <label>月額固定費（税込）</label><input id="otherMonthlyFee" type="number">
+      <label>ネット予約人数（ランチ）</label><input id="otherLunch" type="number">
+      <label>ネット予約人数（ディナー）</label><input id="otherDinner" type="number">
+      <label>ランチ従量料金（円）</label><input id="otherLunchRate" type="number" value="10">
+      <label>ディナー従量料金（円）</label><input id="otherDinnerRate" type="number" value="50">
+    </div>
+  </div>
 
   <h2>■ 月間売上・コスト想定</h2>
   <label>席数</label><input id="seats" type="number">
@@ -106,85 +150,117 @@
   <label>その他費用率（%）</label><input id="rateOther" type="number" value="10">
 
   <button onclick="calculateAll()">計算する</button>
-
   <div class="result" id="result"></div>
 
-  <script>
-    function calculateAll() {
-      const calls = +document.getElementById('calls').value;
-      const visitRate = +document.getElementById('visitRate').value / 100;
-      const groupSize = +document.getElementById('groupSize').value;
-      const netVisit = +document.getElementById('netVisit').value;
-      const unitPrice = +document.getElementById('unitPrice').value;
-      const monthlyFee = +document.getElementById('monthlyFee').value;
-      const lunch = +document.getElementById('lunch').value;
-      const dinner = +document.getElementById('dinner').value;
+<script>
+  function calculateAll() {
+    // 媒体効果の計算
+    const calls = +document.getElementById('calls').value;
+    const visitRate = +document.getElementById('visitRate').value / 100;
+    const groupSize = +document.getElementById('groupSize').value;
+    const netVisit = +document.getElementById('netVisit').value;
+    const unitPrice = +document.getElementById('unitPrice').value;
+    const monthlyFee = +document.getElementById('monthlyFee').value;
+    const lunch = +document.getElementById('lunch').value;
+    const dinner = +document.getElementById('dinner').value;
 
-      const seats = +document.getElementById('seats').value;
-      const seatRate = +document.getElementById('seatRate').value / 100;
-      const rotation = +document.getElementById('rotation').value;
-      const pricePerPerson = +document.getElementById('pricePerPerson').value;
-      const days = +document.getElementById('days').value;
+    const useOther = document.getElementById('toggleOtherMedia').checked;
+    let otherMediaHTML = '';
 
-      const rateFood = +document.getElementById('rateFood').value / 100;
-      const rateLabor = +document.getElementById('rateLabor').value / 100;
-      const rateRent = +document.getElementById('rateRent').value / 100;
-      const rateUtility = +document.getElementById('rateUtility').value / 100;
-      const rateOther = +document.getElementById('rateOther').value / 100;
+    const mediaSales = ((calls * visitRate * groupSize) + netVisit) * unitPrice;
+    const mediaCost = monthlyFee + (lunch * 110) + (dinner * 220);
+    const mediaROI = mediaCost > 0 ? mediaSales / mediaCost : 0;
 
-      const totalRate = rateFood + rateLabor + rateRent + rateUtility + rateOther;
-      const opRate = 1 - totalRate;
+    if (useOther) {
+      const otherCalls = +document.getElementById('otherCalls').value;
+      const otherVisitRate = +document.getElementById('otherVisitRate').value / 100;
+      const otherGroupSize = +document.getElementById('otherGroupSize').value;
+      const otherNetVisit = +document.getElementById('otherNetVisit').value;
+      const otherUnitPrice = +document.getElementById('otherUnitPrice').value;
+      const otherMonthlyFee = +document.getElementById('otherMonthlyFee').value;
+      const otherLunch = +document.getElementById('otherLunch').value;
+      const otherDinner = +document.getElementById('otherDinner').value;
+      const otherLunchRate = +document.getElementById('otherLunchRate').value;
+      const otherDinnerRate = +document.getElementById('otherDinnerRate').value;
 
-      const mediaSales = ((calls * visitRate * groupSize) + netVisit) * unitPrice;
-      const mediaCost = monthlyFee + (lunch * 110) + (dinner * 220);
-      const mediaROI = mediaSales / mediaCost;
+      const otherSales = ((otherCalls * otherVisitRate * otherGroupSize) + otherNetVisit) * otherUnitPrice;
+      const otherCost = otherMonthlyFee + (otherLunch * otherLunchRate) + (otherDinner * otherDinnerRate);
+      const otherROI = otherCost > 0 ? otherSales / otherCost : 0;
 
-      const monthlySales = seats * seatRate * rotation * pricePerPerson * days;
-      const promoBudget = monthlySales * 0.04;
-
-      const foodCost = monthlySales * rateFood;
-      const laborCost = monthlySales * rateLabor;
-      const rent = monthlySales * rateRent;
-      const utility = monthlySales * rateUtility;
-      const otherCost = monthlySales * rateOther;
-      const opProfit = monthlySales * opRate;
-
-      const flr = foodCost + laborCost + rent;
-      const flRate = (foodCost + laborCost) / monthlySales * 100;
-      const grossProfit = monthlySales - foodCost;
-      const grossRate = grossProfit / monthlySales * 100;
-      const laborShare = laborCost / grossProfit * 100;
-
-      document.getElementById('result').innerHTML = `
-        <h2>📊 媒体の費用対効果</h2>
+      otherMediaHTML = `
+        <h2>📊 他媒体の費用対効果</h2>
         <table>
           <tr><th>項目</th><th>結果</th><th>計算式</th></tr>
-          <tr><td>媒体経由売上</td><td>${mediaSales.toLocaleString()} 円</td><td>((通話数×来店率×人数)+ネット予約人数)×客単価</td></tr>
-          <tr><td>媒体掲載費用</td><td>${mediaCost.toLocaleString()} 円</td><td>月額固定費＋(ランチ人数×110)+(ディナー人数×220)</td></tr>
-          <tr><td>費用対効果</td><td>${mediaROI.toFixed(2)} 倍</td><td>媒体経由売上 ÷ 掲載費用</td></tr>
-        </table>
-
-        <h2>📊 月間売上・コスト</h2>
-        <table>
-          <tr><th>項目</th><th>結果</th><th>計算式</th></tr>
-          <tr class="bg-light-blue"><td>月間売上</td><td>${monthlySales.toLocaleString()} 円</td><td>席数×席稼働率×回転数×単価×営業日数</td></tr>
-          <tr class="bg-light-blue"><td>販促費目安</td><td>${promoBudget.toLocaleString()} 円</td><td>月間売上×0.04</td></tr>
-
-          <tr class="bg-light-green"><td>食材原価</td><td>${foodCost.toLocaleString()} 円</td><td>月間売上×${(rateFood*100).toFixed(1)}%</td></tr>
-          <tr class="bg-light-green"><td>人件費</td><td>${laborCost.toLocaleString()} 円</td><td>月間売上×${(rateLabor*100).toFixed(1)}%</td></tr>
-          <tr class="bg-light-green"><td>家賃</td><td>${rent.toLocaleString()} 円</td><td>月間売上×${(rateRent*100).toFixed(1)}%</td></tr>
-          <tr class="bg-light-green"><td>FLRコスト</td><td>${flr.toLocaleString()} 円</td><td>原価＋人件費＋家賃</td></tr>
-          <tr class="bg-light-green"><td>FLコスト比率</td><td>${flRate.toFixed(2)} %</td><td>(原価＋人件費)÷月間売上×100</td></tr>
-          <tr class="bg-light-green"><td>水道光熱費</td><td>${utility.toLocaleString()} 円</td><td>月間売上×${(rateUtility*100).toFixed(1)}%</td></tr>
-          <tr class="bg-light-green"><td>その他費用</td><td>${otherCost.toLocaleString()} 円</td><td>月間売上×${(rateOther*100).toFixed(1)}%</td></tr>
-
-          <tr class="bg-light-yellow"><td>営業利益</td><td>${opProfit.toLocaleString()} 円</td><td>月間売上×${(opRate*100).toFixed(1)}%</td></tr>
-          <tr class="bg-light-yellow"><td>粗利益</td><td>${grossProfit.toLocaleString()} 円</td><td>月間売上−食材原価</td></tr>
-          <tr class="bg-light-yellow"><td>粗利益率</td><td>${grossRate.toFixed(2)} %</td><td>粗利益÷月間売上×100</td></tr>
-          <tr class="bg-light-yellow"><td>労働分配率</td><td>${laborShare.toFixed(2)} %</td><td>人件費÷粗利益×100</td></tr>
+          <tr><td>媒体経由売上</td><td>${otherSales.toLocaleString()} 円</td><td>((通話数×来店率×人数)+ネット予約人数)×客単価</td></tr>
+          <tr><td>媒体掲載費用</td><td>${otherCost.toLocaleString()} 円</td><td>月額固定費＋(ランチ人数×${otherLunchRate})+(ディナー人数×${otherDinnerRate})</td></tr>
+          <tr><td>費用対効果</td><td>${otherROI.toFixed(2)} 倍</td><td>媒体経由売上 ÷ 掲載費用</td></tr>
         </table>
       `;
     }
-  </script>
+
+    // 月間売上・コストの計算
+    const seats = +document.getElementById('seats').value;
+    const seatRate = +document.getElementById('seatRate').value / 100;
+    const rotation = +document.getElementById('rotation').value;
+    const pricePerPerson = +document.getElementById('pricePerPerson').value;
+    const days = +document.getElementById('days').value;
+
+    const rateFood = +document.getElementById('rateFood').value / 100;
+    const rateLabor = +document.getElementById('rateLabor').value / 100;
+    const rateRent = +document.getElementById('rateRent').value / 100;
+    const rateUtility = +document.getElementById('rateUtility').value / 100;
+    const rateOther = +document.getElementById('rateOther').value / 100;
+
+    const monthlySales = seats * seatRate * rotation * pricePerPerson * days;
+    const promoBudget = monthlySales * 0.04;
+    const foodCost = monthlySales * rateFood;
+    const laborCost = monthlySales * rateLabor;
+    const rent = monthlySales * rateRent;
+    const utility = monthlySales * rateUtility;
+    const otherCost = monthlySales * rateOther;
+    const flr = foodCost + laborCost + rent;
+    const flRate = monthlySales > 0 ? ((foodCost + laborCost) / monthlySales) * 100 : 0;
+    const grossProfit = monthlySales - foodCost;
+    const grossRate = monthlySales > 0 ? (grossProfit / monthlySales) * 100 : 0;
+    const laborShare = grossProfit > 0 ? (laborCost / grossProfit) * 100 : 0;
+    const opProfitRate = 1 - (rateFood + rateLabor + rateRent + rateUtility + rateOther);
+    const opProfit = monthlySales * opProfitRate;
+
+    const monthlySalesHTML = `
+      <h2>📊 月間売上・コスト</h2>
+      <table>
+        <tr><th>項目</th><th>結果</th><th>計算式</th></tr>
+        <tr class="bg-light-blue"><td>月間売上</td><td>${monthlySales.toLocaleString()} 円</td><td>席数×席稼働率×回転数×単価×営業日数</td></tr>
+        <tr class="bg-light-blue"><td>販促費目安</td><td>${promoBudget.toLocaleString()} 円</td><td>月間売上×0.04</td></tr>
+
+        <tr class="bg-light-green"><td>食材原価</td><td>${foodCost.toLocaleString()} 円</td><td>月間売上×${(rateFood * 100).toFixed(1)}%</td></tr>
+        <tr class="bg-light-green"><td>人件費</td><td>${laborCost.toLocaleString()} 円</td><td>月間売上×${(rateLabor * 100).toFixed(1)}%</td></tr>
+        <tr class="bg-light-green"><td>家賃</td><td>${rent.toLocaleString()} 円</td><td>月間売上×${(rateRent * 100).toFixed(1)}%</td></tr>
+        <tr class="bg-light-green"><td>FLRコスト</td><td>${flr.toLocaleString()} 円</td><td>原価＋人件費＋家賃</td></tr>
+        <tr class="bg-light-green"><td>FLコスト比率</td><td>${flRate.toFixed(2)} %</td><td>(原価＋人件費)÷月間売上×100</td></tr>
+        <tr class="bg-light-green"><td>水道光熱費</td><td>${utility.toLocaleString()} 円</td><td>月間売上×${(rateUtility * 100).toFixed(1)}%</td></tr>
+        <tr class="bg-light-green"><td>その他費用</td><td>${otherCost.toLocaleString()} 円</td><td>月間売上×${(rateOther * 100).toFixed(1)}%</td></tr>
+
+        <tr class="bg-light-yellow"><td>営業利益</td><td>${opProfit.toLocaleString()} 円</td><td>月間売上×${(opProfitRate * 100).toFixed(1)}%</td></tr>
+        <tr class="bg-light-yellow"><td>粗利益</td><td>${grossProfit.toLocaleString()} 円</td><td>月間売上−食材原価</td></tr>
+        <tr class="bg-light-yellow"><td>粗利益率</td><td>${grossRate.toFixed(2)} %</td><td>粗利益÷月間売上×100</td></tr>
+        <tr class="bg-light-yellow"><td>労働分配率</td><td>${laborShare.toFixed(2)} %</td><td>人件費÷粗利益×100</td></tr>
+      </table>
+    `;
+
+    document.getElementById('result').innerHTML = `
+      <h2>📊 自媒体の費用対効果</h2>
+      <table>
+        <tr><th>項目</th><th>結果</th><th>計算式</th></tr>
+        <tr><td>媒体経由売上</td><td>${mediaSales.toLocaleString()} 円</td><td>((通話数×来店率×人数)+ネット予約人数)×客単価</td></tr>
+        <tr><td>媒体掲載費用</td><td>${mediaCost.toLocaleString()} 円</td><td>月額固定費＋(ランチ人数×110)+(ディナー人数×220)</td></tr>
+        <tr><td>費用対効果</td><td>${mediaROI.toFixed(2)} 倍</td><td>媒体経由売上 ÷ 掲載費用</td></tr>
+      </table>
+      ${otherMediaHTML}
+      ${monthlySalesHTML}
+    `;
+  }
+</script>
+
 </body>
 </html>

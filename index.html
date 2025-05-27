@@ -98,6 +98,13 @@
   <label>顧客単価（税込）</label><input id="pricePerPerson" type="number">
   <label>営業日数</label><input id="days" type="number">
 
+  <h2>■ コスト比率の設定</h2>
+  <label>食材原価率（%）</label><input id="rateFood" type="number" value="30">
+  <label>人件費率（%）</label><input id="rateLabor" type="number" value="30">
+  <label>家賃率（%）</label><input id="rateRent" type="number" value="10">
+  <label>水道光熱費率（%）</label><input id="rateUtility" type="number" value="10">
+  <label>その他費用率（%）</label><input id="rateOther" type="number" value="10">
+
   <button onclick="calculateAll()">計算する</button>
 
   <div class="result" id="result"></div>
@@ -119,6 +126,15 @@
       const pricePerPerson = +document.getElementById('pricePerPerson').value;
       const days = +document.getElementById('days').value;
 
+      const rateFood = +document.getElementById('rateFood').value / 100;
+      const rateLabor = +document.getElementById('rateLabor').value / 100;
+      const rateRent = +document.getElementById('rateRent').value / 100;
+      const rateUtility = +document.getElementById('rateUtility').value / 100;
+      const rateOther = +document.getElementById('rateOther').value / 100;
+
+      const totalRate = rateFood + rateLabor + rateRent + rateUtility + rateOther;
+      const opRate = 1 - totalRate;
+
       const mediaSales = ((calls * visitRate * groupSize) + netVisit) * unitPrice;
       const mediaCost = monthlyFee + (lunch * 110) + (dinner * 220);
       const mediaROI = mediaSales / mediaCost;
@@ -126,16 +142,15 @@
       const monthlySales = seats * seatRate * rotation * pricePerPerson * days;
       const promoBudget = monthlySales * 0.04;
 
-      const foodCost = monthlySales * 0.3;
-      const laborCost = monthlySales * 0.3;
-      const rent = monthlySales * 0.1;
+      const foodCost = monthlySales * rateFood;
+      const laborCost = monthlySales * rateLabor;
+      const rent = monthlySales * rateRent;
+      const utility = monthlySales * rateUtility;
+      const otherCost = monthlySales * rateOther;
+      const opProfit = monthlySales * opRate;
+
       const flr = foodCost + laborCost + rent;
       const flRate = (foodCost + laborCost) / monthlySales * 100;
-
-      const utility = monthlySales * 0.1;
-      const otherCost = monthlySales * 0.1;
-      const opProfit = monthlySales * 0.1;
-
       const grossProfit = monthlySales - foodCost;
       const grossRate = grossProfit / monthlySales * 100;
       const laborShare = laborCost / grossProfit * 100;
@@ -155,15 +170,15 @@
           <tr class="bg-light-blue"><td>月間売上</td><td>${monthlySales.toLocaleString()} 円</td><td>席数×席稼働率×回転数×単価×営業日数</td></tr>
           <tr class="bg-light-blue"><td>販促費目安</td><td>${promoBudget.toLocaleString()} 円</td><td>月間売上×0.04</td></tr>
 
-          <tr class="bg-light-green"><td>食材原価</td><td>${foodCost.toLocaleString()} 円</td><td>月間売上×30%</td></tr>
-          <tr class="bg-light-green"><td>人件費</td><td>${laborCost.toLocaleString()} 円</td><td>月間売上×30%</td></tr>
-          <tr class="bg-light-green"><td>家賃</td><td>${rent.toLocaleString()} 円</td><td>月間売上×10%</td></tr>
+          <tr class="bg-light-green"><td>食材原価</td><td>${foodCost.toLocaleString()} 円</td><td>月間売上×${(rateFood*100).toFixed(1)}%</td></tr>
+          <tr class="bg-light-green"><td>人件費</td><td>${laborCost.toLocaleString()} 円</td><td>月間売上×${(rateLabor*100).toFixed(1)}%</td></tr>
+          <tr class="bg-light-green"><td>家賃</td><td>${rent.toLocaleString()} 円</td><td>月間売上×${(rateRent*100).toFixed(1)}%</td></tr>
           <tr class="bg-light-green"><td>FLRコスト</td><td>${flr.toLocaleString()} 円</td><td>原価＋人件費＋家賃</td></tr>
           <tr class="bg-light-green"><td>FLコスト比率</td><td>${flRate.toFixed(2)} %</td><td>(原価＋人件費)÷月間売上×100</td></tr>
-          <tr class="bg-light-green"><td>水道光熱費</td><td>${utility.toLocaleString()} 円</td><td>月間売上×10%</td></tr>
-          <tr class="bg-light-green"><td>その他費用</td><td>${otherCost.toLocaleString()} 円</td><td>月間売上×10%</td></tr>
+          <tr class="bg-light-green"><td>水道光熱費</td><td>${utility.toLocaleString()} 円</td><td>月間売上×${(rateUtility*100).toFixed(1)}%</td></tr>
+          <tr class="bg-light-green"><td>その他費用</td><td>${otherCost.toLocaleString()} 円</td><td>月間売上×${(rateOther*100).toFixed(1)}%</td></tr>
 
-          <tr class="bg-light-yellow"><td>営業利益</td><td>${opProfit.toLocaleString()} 円</td><td>月間売上×10%</td></tr>
+          <tr class="bg-light-yellow"><td>営業利益</td><td>${opProfit.toLocaleString()} 円</td><td>月間売上×${(opRate*100).toFixed(1)}%</td></tr>
           <tr class="bg-light-yellow"><td>粗利益</td><td>${grossProfit.toLocaleString()} 円</td><td>月間売上−食材原価</td></tr>
           <tr class="bg-light-yellow"><td>粗利益率</td><td>${grossRate.toFixed(2)} %</td><td>粗利益÷月間売上×100</td></tr>
           <tr class="bg-light-yellow"><td>労働分配率</td><td>${laborShare.toFixed(2)} %</td><td>人件費÷粗利益×100</td></tr>
